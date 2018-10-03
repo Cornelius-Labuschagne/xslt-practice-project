@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="transformer.xsl"?>
+<application-form-definition version="20" product="FNB Simplified Life" productTSF="FNBLSLIFE">
+	<application-key-mappings>
+		<application-key-map tsfname="client.rsaid" appname="ID_NO"/>
+		<application-key-map tsfname="client.firstNames" appname="FIRSTNAME"/>
+		<application-key-map tsfname="client.lastName" appname="SURNAME"/>
+		<application-key-map tsfname="userdef.1" appname="product.inceptiondate.sql"/>
+		<application-key-map tsfname="userdef.2" appname="UCN"/>
+		<application-key-map tsfname="userdef.3" appname="LEAD_ID"/>
+		<application-key-map tsfname="userdef.4" appname="policy.total.premium"/>
+		<application-key-map tsfname="userdef.5" appname="uwresult.outcome"/>
+	</application-key-mappings>
+	<application-rules>
+		<application-number generate-where="client" generate-method="auto" displayName="Application number"/>
+		<product-instance-number generate-where="server" generate-method="list" displayName="Policy number"/>
+	</application-rules>
+	<section indexLabel="0" displayLabel="Lead Information">
+		<field fieldKind="text" allowEdit="No" dataName="CAMPAIGN_ID" displayLabel="Lead campaign number" validationKind="not-empty"/>
+		<field fieldKind="text" allowEdit="No" dataName="LEAD_ID" displayLabel="Lead refference number" validationKind="not-empty"/>
+	</section>
+	<section indexLabel="A" displayLabel="Details of plan holder">
+		<field fieldKind="displayonly" dataName="ph.info" displayLabel="None">
+			<display-only-text>The client data shown below can not be changed. It is displayed as received from FNB and is provided to verify the client identiy.</display-only-text>
+		</field>
+		<field allowEdit="No" fieldKind="text" dataName="UCN" displayLabel="UCN Number" validationKind="not-empty"/>
+		<field allowEdit="No" fieldKind="integer" dataName="AGE" displayLabel="Age as provided by FNB" validationKind="not-empty"/>
+		<field fieldKind="text" allowEdit="No" dataName="TITLE" displayLabel="Title" validationKind="optional"/>
+		<field fieldKind="text" allowEdit="No" dataName="FIRSTNAME" displayLabel="First name(s)" validationKind="optional"/>
+		<field fieldKind="text" allowEdit="No" dataName="SURNAME" displayLabel="Surname" validationKind="optional"/>
+		<field fieldKind="text" allowEdit="No" dataName="ID_NO" displayLabel="ID Number" validationKind="optional"/>
+	</section>
+	<business-logic>
+		<script name="initAppValues" run="init">
+<![CDATA[
+
+        procedure initInceptionDate;
+        var
+            iy, im, id : integer;
+
+        begin
+            decodedate(now+15,iy,im,id);
+            setDateValue('product.inceptiondate',iy,im,id);
+        end;
+
+        initInceptionDate;
+
+    ]]>
+		</script>
+	</business-logic>
+</application-form-definition>
